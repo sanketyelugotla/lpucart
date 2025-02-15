@@ -102,9 +102,9 @@ const checkout = async (user) => {
         throw new Error("Cart is empty");
     }
 
-    if (user.address === config.default_address) {
-        throw new Error("Address not set");
-    }
+    // if (user.address === config.default_address) {
+    //     throw new Error("Address not set");
+    // }
 
     let total = 0;
     for (let i = 0; i < cart.cartItems.length; i++) {
