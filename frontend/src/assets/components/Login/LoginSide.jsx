@@ -20,8 +20,7 @@ export default function LoginSide({ loginSide, changeSide }) {
         setFormData((prev) => ({ ...prev, [name]: value }))
     }
     const naviagte = useNavigate();
-    const {backendUrl} = useContext(urlContext);
-
+    const { backendUrl } = useContext(urlContext);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -33,6 +32,7 @@ export default function LoginSide({ loginSide, changeSide }) {
                 body: JSON.stringify({ email, password })
             });
             const res = await response.json();
+            console.log(res)
             const token = res.tokens.access.token
             const _id = res.user._id;
             console.log(_id, token)
