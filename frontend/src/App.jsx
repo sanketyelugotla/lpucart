@@ -5,7 +5,7 @@ import HoverMainDiv from './assets/Hooks/HoverDiv/HoverMainDiv'
 import { loginContext } from './assets/Hooks/ContextProvider/ContextProvider'
 import Home from './assets/components/Home/Home'
 import Main from './assets/components/Home/Main'
-import Cart from './assets/components/cart/cart'
+import Cart from './assets/components/cart/Cart'
 import './App.css'
 
 function App() {
