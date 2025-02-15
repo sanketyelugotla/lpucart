@@ -3,7 +3,7 @@ const { userService } = require("../services");
 const catchAsync = require("../utils/catchAsync");
 
 const getUser = catchAsync(async (req, res) => {
-    let data = await userService.getUserById(req.params.userId, res)
+    let data = await userService.getUserById(req.params.userId)
     if (!data) {
         return res.json(404).send("user not found")
     }
@@ -14,7 +14,7 @@ const getUser = catchAsync(async (req, res) => {
 })
 
 const setAddress = catchAsync(async (req, res) => {
-    const user = await userService.getUserById(req.params.userId, res)
+    const user = await userService.getUserById(req.params.userId)
     if (!user) {
         return res.json(404).send("user not found")
 
@@ -23,8 +23,10 @@ const setAddress = catchAsync(async (req, res) => {
         return res.json(400).send("USer not allowed to accesss this resource")
 
     }
-    const address = await userService.setAddress(user, req.body.address, res)
-    res.send({ address: address })
+    const address = await userService.setAddress(user, req.body.address)
+    res.send({
+        address: address
+    })
 
 })
 

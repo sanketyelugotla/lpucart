@@ -2,22 +2,22 @@
 const mongoose = require("mongoose");
 const { productSchema } = require("./product.model");
 const config = require("../config/config");
-const cartSchema =  mongoose.Schema({
-    email:{
-        type:String,
-        required:true
+const cartSchema = mongoose.Schema({
+    email: {
+        type: String,
+        required: true
     },
-    cartItems : [
+    cartItems: [
         {
-            product : productSchema,
-            quantity :Number
+            product: productSchema,
+            quantity: Number
         }
     ],
-    paymentOption : {
-        type:String,
-        default:config.default_payment_option
+    paymentOption: {
+        type: String,
+        default: config.default_payment_option
     }
 })
 
-const Cart = mongoose.model("Cart",cartSchema)
+const Cart = mongoose.model("Cart", cartSchema)
 module.exports.Cart = Cart

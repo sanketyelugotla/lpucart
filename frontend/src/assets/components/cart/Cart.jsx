@@ -69,12 +69,13 @@ const Cart = () => {
                 method: "PUT",
                 headers: { Authorization: `Bearer ${token}` },
             });
-
+            const res = await response.json();
             if (response.ok) {
                 alert("Checkout successful!");
-                setCart([]); // Clear the cart
+                setCart([]);
             } else {
-                alert("Checkout failed. Please try again.");
+                console.log(res)
+                alert(res.message);
             }
         } catch (error) {
             console.error("Checkout error:", error);

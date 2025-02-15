@@ -7,8 +7,8 @@ const productRouter = require("./product.route")
 const cartRouter = require("./cart.route")
 const router = express.Router()
 
-router.use("/auth",authRouter)
-router.use("/users",userRouter)
-router.use("/products",productRouter)
-router.use("/cart",cartRouter)
+router.use("/auth", authRouter)
+router.use("/users", userRouter)
+router.use("/products", productRouter)
+router.use("/cart", cartRouter)
 module.exports = router

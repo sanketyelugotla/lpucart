@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SignupSide({ loginSide, changeSide }) {
 
-    const { bacendUrl } = useContext(urlContext);
+    const { backendUrl } = useContext(urlContext);
     const [isWrong, setIsWrong] = useState(null);
     const { toggleLogin } = useContext(loginContext)
 
@@ -26,31 +26,30 @@ export default function SignupSide({ loginSide, changeSide }) {
     async function handleSubmit(event) {
         event.preventDefault();
         const { name, email, password } = formData;
-        console.log(formData)
         try {
-            const response = await fetch(`${bacendUrl}/verse/auth/register`, {
+            const response = await fetch(`${backendUrl}/verse/auth/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password })
             });
-
+            console.log(response)
             const res = await response.json();
-            const token = res.tokens.access.token
-            const _id = res.user._id;
-            console.log(_id, token)
-            localStorage.setItem("_id", _id)
-            localStorage.setItem("token", token)
+            console.log(res)
 
             if (response.ok) {
-                naviagte("/home");
+                const token = res.tokens.access.token
+                const _id = res.user._id;
+                localStorage.setItem("_id", _id)
+                localStorage.setItem("token", token)
+                navigate("/home");
                 toggleLogin();
             } else {
-                setIsWrong("Signup failed");
+                setIsWrong(res.message);
                 console.error("SignUp failed:", res.message);
             }
         } catch (error) {
+            console.log(error)
             setIsWrong("Internal server error")
-            console.log("Signup failed ");
         }
     }
 

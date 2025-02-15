@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./Products.module.css"; // Use the same CSS file
+import styles from "./Products.module.css";
 import Button from "../../Hooks/Button/Button";
 
 const ProductCard = ({ product }) => {
-    const token = localStorage.getItem("token"); // Retrieve token for authentication
+    const token = localStorage.getItem("token");
 
     const handleAddToCart = async () => {
         if (!token) {
@@ -23,15 +23,15 @@ const ProductCard = ({ product }) => {
                     quantity: 1,
                 }),
             });
-
-            if (!response.ok) {
-                throw new Error(`Failed to add product to cart: ${response.status}`);
+            const res = response.json()
+            if (!res.ok) {
+                throw new Error(`Failed to add product to cart`);
             }
 
             alert("Product added to cart successfully!");
         } catch (error) {
             console.error("Error adding product to cart:", error);
-            alert("Failed to add product to cart.");
+            alert("Product is already present in cart");
         }
     };
 

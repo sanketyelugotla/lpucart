@@ -40,14 +40,12 @@ export default function LoginSide({ loginSide, changeSide }) {
                 localStorage.setItem("token", token)
                 naviagte("/home");
                 toggleLogin();
-                // localStorage.setItem("auth")
-                console.log("logged")
             } else {
-                setIsWrong("Invalid credentials");
+                setIsWrong(res.message);
                 console.error("Login failed:", res.message);
             }
         } catch (error) {
-            setIsWrong("Invalid credentials");
+            setIsWrong(error.message);
             console.log(error)
         }
     }

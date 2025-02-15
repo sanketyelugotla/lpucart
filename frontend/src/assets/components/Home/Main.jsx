@@ -25,7 +25,7 @@ export default function Main() {
             const data = await response.json();
             setUser(data);
         } catch (error) {
-            console.error("Failed to fetch user data:", error);
+            console.error("Failed to fetch user data:", error.message);
         }
     }
 

@@ -2,15 +2,15 @@ const config = require("../config/config")
 const { Cart, Product } = require("../models/index")
 
 
-const getCartByUser = async (user, res) => {
+const getCartByUser = async (user) => {
     let cart = await Cart.findOne({ email: user.email })
     if (cart === null) {
-        return res.status(404).send({ message: "User does not have a cart" })
+        throw new Error("User does not have a cart")
     }
     return cart
 }
 
-const addProductToCart = async (user, productId, quantity, res) => {
+const addProductToCart = async (user, productId, quantity) => {
     let cart = await Cart.findOne({ email: user.email });
     if (!cart) {
         try {
@@ -20,11 +20,11 @@ const addProductToCart = async (user, productId, quantity, res) => {
                 paymentOption: config.default_payment_option
             })
         } catch (error) {
-            return res.status(409).send({ message: "User cart creation failed, already have a cart" })
+            throw new Error("User cart creation failed, already have a cart")
         }
     }
     if (cart === null) {
-        return res.status(404).send({ message: "User does not have a cart" })
+        throw new Error("User does not have a cart")
     }
     let productIndex = -1;
     for (let i = 0; i < cart.cartItems.length; i++) {
@@ -35,25 +35,27 @@ const addProductToCart = async (user, productId, quantity, res) => {
     if (productIndex == -1) {
         let product = await Product.findOne({ _id: productId });
         if (product == null) {
-            return res.status(404).send({ message: "Product does not exist in database" })
+            throw new Error("Product does not exist in database")
         }
         cart.cartItems.push({ product: product, quantity: quantity })
     } else {
-        return res.status(409).send({ message: "Product already in the cart" })
+        throw new Error("Product already in the cart")
     }
+
     await cart.save()
     return cart;
 }
 
 const updateProductInCart = async (user, productId, quantity) => {
+
     let cart = await Cart.findOne({ email: user.email })
     if (cart == null) {
-        return res.status(404).send({ message: "User does not have a cart" })
+        throw new Error("User does not have a cart")
     }
 
     let product = await Product.findOne({ _id: productId })
     if (product == null) {
-        return res.status(404).send({ message: "Product does not exist" })
+        throw new Error("Product does not exist")
     }
     let productIndex = -1;
     for (let i = 0; i < cart.cartItems.length; i++) {
@@ -62,7 +64,7 @@ const updateProductInCart = async (user, productId, quantity) => {
         }
     }
     if (productIndex == -1) {
-        return res.status(404).send({ message: "Product not in cart" })
+        throw new Error("Product not in cart")
     } else {
         cart.cartItems[productIndex].quantity = quantity;
     }
@@ -73,7 +75,7 @@ const updateProductInCart = async (user, productId, quantity) => {
 const deleteProductInCart = async (user, productId) => {
     let cart = await Cart.findOne({ email: user.email })
     if (cart == null) {
-        return res.status(404).send({ message: "User does not have a cart" })
+        throw new Error("User does nt have a cart")
     }
     let productIndex = -1;
     for (let i = 0; i < cart.cartItems.length; i++) {
@@ -82,25 +84,26 @@ const deleteProductInCart = async (user, productId) => {
         }
     }
     if (productIndex == -1) {
-        return res.status(404).send({ message: "Product does not exist for this user" })
+        throw new Error("Product does not exist for this user")
     } else {
         cart.cartItems.splice(productIndex, 1)
     }
     await cart.save()
+
 }
 
 const checkout = async (user) => {
     let cart = await Cart.findOne({ email: user.email })
     if (cart == null) {
-        return res.status(404).send({ message: "User does not have a cart" })
+        throw new Error("User does not have a cart")
     }
 
     if (cart.cartItems.length === 0) {
-        return res.status(404).send({ message: "Cart is empty" })
+        throw new Error("Cart is empty")
     }
 
     if (user.address == config.default_address) {
-        return res.status(404).send({ message: "Address not set" })
+        throw new Error("Address not set")
     }
 
     let total = 0;
@@ -108,7 +111,7 @@ const checkout = async (user) => {
         total += cart.cartItems[i].product.cost * cart.cartItems[i].quantity;
     }
     if (total > user.walletMoney) {
-        return res.status(402).send({ message: "User has insufficient money to process" })
+        throw new Error("User has insufficient money to process")
     }
 
     user.walletMoney -= total;
@@ -116,6 +119,7 @@ const checkout = async (user) => {
 
     cart.cartItems = []
     await cart.save();
+
 }
 
 module.exports = {
