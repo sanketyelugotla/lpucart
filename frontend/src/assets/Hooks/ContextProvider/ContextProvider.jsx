@@ -7,7 +7,8 @@ export default function ContextProvider({ children }) {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [isLogged, setIslogged] = useState(false);
-    const backendUrl = "http://localhost:4000"
+    // const backendUrl = "http://localhost:4000"
+    const backendUrl = "https://lpucart-i6j7.onrender.com"
 
     function toggleLogin() {
         setIsLoginOpen(!isLoginOpen)

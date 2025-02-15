@@ -21,6 +21,9 @@ app.use("/verse", router)
 app.get("/", (req, res) => {
     res.send("Hello welcome to Cart Project")
 })
-app.listen(config.port, () => {
-    console.log("listening to port ", config.port)
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log("listening to port ", PORT)
 })
