@@ -33,12 +33,11 @@ export default function LoginSide({ loginSide, changeSide }) {
             });
             const res = await response.json();
             console.log(res)
-            const token = res.tokens.access.token
-            const _id = res.user._id;
-            console.log(_id, token)
-            localStorage.setItem("_id", _id)
-            localStorage.setItem("token", token)
             if (response.ok) {
+                const token = res.tokens.access.token
+                const _id = res.user._id;
+                localStorage.setItem("_id", _id)
+                localStorage.setItem("token", token)
                 naviagte("/home");
                 toggleLogin();
                 // localStorage.setItem("auth")

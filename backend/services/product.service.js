@@ -1,10 +1,10 @@
 const { Product } = require("../models")
 
-const getProductsById = async (id)=>{
+const getProductsById = async (id) => {
     return Product.findById(id)
 }
 
-const getProducts = async()=>{
+const getProducts = async () => {
     return Product.find({})
 }
 
