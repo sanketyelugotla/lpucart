@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./Products.module.css";
 import Button from "../../Hooks/Button/Button";
+import { urlContext } from "../../Hooks/ContextProvider/ContextProvider";
 
 const ProductCard = ({ product }) => {
     const token = localStorage.getItem("token");
+    const { backendUrl } = useContext(urlContext);
 
     const handleAddToCart = async () => {
         if (!token) {
             alert("Please login to add items to your cart.");
             return;
         }
-
         try {
-            const response = await fetch("http://localhost:4000/verse/cart", {
+            console.log(product._id);
+            const response = await fetch(`${backendUrl}/verse/cart`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -23,17 +25,20 @@ const ProductCard = ({ product }) => {
                     quantity: 1,
                 }),
             });
-            const res = response.json()
-            if (!res.ok) {
-                throw new Error(`Failed to add product to cart`);
+
+            const res = await response.json();
+
+            if (!response.ok) {
+                throw new Error(res.message || "Failed to add product to cart");
             }
 
             alert("Product added to cart successfully!");
         } catch (error) {
             console.error("Error adding product to cart:", error);
-            alert("Product is already present in cart");
+            alert(error.message);
         }
     };
+
 
     return (
         <div className={styles.card}>

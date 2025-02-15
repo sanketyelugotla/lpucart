@@ -37,7 +37,7 @@ export default function SignupSide({ loginSide, changeSide }) {
             console.log(res)
 
             if (response.ok) {
-                const token = res.tokens.access.token
+                const token = res.token.access.token
                 const _id = res.user._id;
                 localStorage.setItem("_id", _id)
                 localStorage.setItem("token", token)
@@ -49,7 +49,7 @@ export default function SignupSide({ loginSide, changeSide }) {
             }
         } catch (error) {
             console.log(error)
-            setIsWrong("Internal server error")
+            setIsWrong(error.message)
         }
     }
 

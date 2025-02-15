@@ -34,7 +34,7 @@ export default function LoginSide({ loginSide, changeSide }) {
             const res = await response.json();
             console.log(res)
             if (response.ok) {
-                const token = res.tokens.access.token
+                const token = res.token.access.token
                 const _id = res.user._id;
                 localStorage.setItem("_id", _id)
                 localStorage.setItem("token", token)
