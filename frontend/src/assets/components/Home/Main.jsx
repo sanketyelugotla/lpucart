@@ -2,15 +2,17 @@ import React, { useContext, useEffect } from "react";
 import { loginContext } from "../../Hooks/ContextProvider/ContextProvider";
 import { userContext } from "../../Hooks/ContextProvider/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import { urlContext } from "../../Hooks/ContextProvider/ContextProvider";
 
 export default function Main() {
     const { setIsLoginOpen } = useContext(loginContext);
     const { user, setUser } = useContext(userContext);
     const navigate = useNavigate();
+    const { backendUrl } = useContext(urlContext)
 
     async function fetchUserData(_id, token) {
         try {
-            const response = await fetch(`http://localhost:4000/verse/users/${_id}`, {
+            const response = await fetch(`${backendUrl}/verse/users/${_id}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
